@@ -1,62 +1,29 @@
 ﻿@{
     ViewBag.Title = "NfxLab Dashboard";
-
-    dynamic data = HttpContext.Current.Application["Data"];
-
-    if (data == null)
-    {
-        data = new System.Dynamic.ExpandoObject();
-        data.temperature = 0;
-        data.humidity = 0;
-    }
-
-    dynamic updateDate = HttpContext.Current.Application["UpdateDate"];
 }
-
-<div class="jumbotron">
-    <span id="temperature">@data.temperature</span> °C - <span id="humidity">@data.humidity</span> %
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 page-header">
+        <h1>NfxLab Dashboard</h1>
+        <div>
+            <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+            <span id="updateTime" class=""></span>
+            <span id="updateDate" class=""></span>
+        </div>
+    </div>
 </div>
-@updateDate
-
-<h2>Debug</h2>
-<input id="debugTemperature" type="text" />
-<input id="debugHumidity" type="text" />
-<button id="debugPut">PUT</button>
+<div class="row">
+    <div class="col-md-3 col-md-offset-3">
+        <h2>Temperature</h2>
+        <span id="temperature" class="data"></span> <span class="unit text-muted">°C</span>
+    </div>
+    <div class="col-md-3">
+        <h2>Humidity</h2>
+        <span id="humidity" class="data"></span> <span class="unit text-muted">%</span>
+    </div>
+</div>
 
 @section scripts {
-    <script src="Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="signalr/hubs"></script>
-    <script>
-        var hub = $.connection.dashboardHub;
-        hub.client.updateData = function (data) {
-            console.log(data);
-            $("#temperature").text(data.temperature);
-            $("#humidity").text(data.humidity);
-        };
-
-        $.connection.hub.start().done(function () {
-            // Wire up Send button to call NewContosoChatMessage on the server.
-            //$('#newContosoChatMessage').click(function () {
-            //    contosoChatHubProxy.server.newContosoChatMessage($('#displayname').val(), $('#message').val());
-            //    $('#message').val('').focus();
-            //});
-
-            $("#debugPut").click(function () {
-                var data = {
-                    temperature: $("#debugTemperature").val(),
-                    humidity: $("#debugHumidity").val()
-                };
-
-                $.ajax({
-                    url: '/api/SensorData',
-                    type: 'PUT',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    success: function (result) {
-                        // Do something with the result
-                    }
-                });
-            })
-        });
-    </script>
+    <script src="~/Scripts/dashboard.js"></script>
 }
