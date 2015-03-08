@@ -14,12 +14,12 @@ namespace NfxLab.Dashboard.Controllers
         {
             //string name = Context.User.Identity.Name;
 
-            dynamic data = new ExpandoObject();
-            data.Temperature = 23.45;
-            data.Humidity = 34.56;
-            data.UpdateTime = DateTime.Now.ToLongTimeString();
-            data.UpdateDate = DateTime.Now.ToLongDateString();
-
+            //dynamic data = new ExpandoObject();
+            //data.Temperature = 23.45;
+            //data.Humidity = 34.56;
+            //data.UpdateTime = DateTime.UtcNow.ToLongTimeString();
+            //data.UpdateDate = DateTime.UtcNow.ToLongDateString();
+            dynamic data = HttpContext.Current.Application["Data"];
             //Clients.User(name).updateData(data);
             Clients.Caller.UpdateData(data);
 

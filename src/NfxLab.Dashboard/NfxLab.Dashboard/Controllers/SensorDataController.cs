@@ -13,6 +13,9 @@ namespace NfxLab.Dashboard.Controllers
     {
         public void Put(dynamic data)
         {
+            DateTime now =DateTime.UtcNow.AddHours(1);
+            data.UpdateTime = now.ToLongTimeString();
+            data.UpdateDate = now.ToLongDateString();
             HttpContext.Current.Application["Data"] = data;
             
             var context = GlobalHost.ConnectionManager.GetHubContext<DashboardHub>();
